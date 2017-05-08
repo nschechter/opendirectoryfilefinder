@@ -1,5 +1,5 @@
-require_relative './DirScraper'
 require_relative './SmartDirScraper'
+require_relative './DirCollector'
 
 def run
 	sites = []
@@ -12,21 +12,26 @@ def run
     	end
   	end
 	end
-	puts "Name of item?"
-	name = gets.chomp
-	scraper = SmartDirScraper.new(sites[0], name)
-	scraper.start_scraping()
-	# puts "Select Directory to Search: "
-	# sites.each.with_index(1) { |site, index| puts "#{index}: #{site}" }
+	puts "What do you want to do?"
+	puts "1) - Update scraper list"
+	puts "2) - Search for an item"
+	puts "3) - Download loaded items"
 	# input = gets.chomp
-	# if input.to_i > 0 && input.to_i <= sites.length
-	# 	url = sites[input.to_i-1]
-	# 	scraper = DirScraper.new(url, name)
-	# 	scraper.scrape()
-	# else
-	# 	puts "Incorrect input."
-	# end
-
+	input = 1
+	case input
+	when 1
+		puts "Collecting directories to sites.txt..."
+		dircollector = DirCollector.new("Videos")
+	when 2
+		puts "Name of item?"
+		name = gets.chomp
+		scraper = SmartDirScraper.new(sites[0], name)
+		scraper.start_scraping()
+	when 3
+		puts "Downloading"
+	else
+		puts "Couldn't recognize #{input}"
+	end
 end
 
 def setup

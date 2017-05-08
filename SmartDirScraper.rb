@@ -40,6 +40,7 @@ class SmartDirScraper
 					@current_index += 1
 					scrape_dir(@base_url)
 				else
+					#found it
 					@results.each { |result| puts "Found #{result.text} @ #{url + result['href']}" }
 				end
 			when 404
