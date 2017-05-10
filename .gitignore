@@ -9,4 +9,4 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
-secrets.yaml
+secrets.yml

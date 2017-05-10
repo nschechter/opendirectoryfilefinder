@@ -1,9 +1,9 @@
+require_relative './GoogleSearcher'
 require 'httparty'
 require 'nokogiri'
 require 'byebug'
-require_relative "./Google"
 
-class DirCollecter
+class DirCollector
 	def initialize(type)
 		@type = type
 	end
@@ -12,8 +12,7 @@ class DirCollecter
 		scrape(@type)
 	end
 
-	private
 	def scrape(type)
-		byebug
+		GoogleSearcher.search("movies")
 	end
 end

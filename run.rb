@@ -3,6 +3,8 @@ require_relative './DirCollector'
 
 def run
 	sites = []
+
+	#Load in all directories
 	File.open("./sites.txt", "r") do |f|
   	f.each_line do |line|
   		if (line.include?("\n"))
@@ -12,6 +14,7 @@ def run
     	end
   	end
 	end
+
 	puts "What do you want to do?"
 	puts "1) - Update scraper list"
 	puts "2) - Search for an item"
@@ -20,8 +23,9 @@ def run
 	input = 1
 	case input
 	when 1
-		puts "Collecting directories to sites.txt..."
+		puts "Collecting directories to sites.txt"
 		dircollector = DirCollector.new("Videos")
+		dircollector.start_scraper()
 	when 2
 		puts "Name of item?"
 		name = gets.chomp
