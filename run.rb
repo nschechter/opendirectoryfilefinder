@@ -33,17 +33,21 @@ def run
 		name = gets.chomp
 		scraper = SmartDirScraper.new(sites[0], name)
 		scraper.start_scraping()
-
 	when 3
 		puts "Downloading..."
-		DirectoryScraper.scrape_directory('http://sirftp.com/')
+		DirectoryScraper.scrape_directory('http://dl2.my98music.com/Data/')
 		input = gets.chomp
 		while input != 'exit'
 			case input
 			when 'download'
+				puts "Type? (optional)"
+				type = gets.chomp
+				puts "Name?"
+				name = gets.chomp
 			when 'type'
-				byebug
-				Directory.get_directories_of_type('movie')
+				puts "Type?"
+				type = gets.chomp
+				puts Directory.get_directories_of_type(type)
 			else
 				puts "I don't understand."
 			end

@@ -8,7 +8,7 @@ class Directory
 	@@MUSIC_TYPES = ['album', 'song', 'cassette', 'vinyl', 'podcast', 'radio']
 	@@SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg']
 
-	attr_reader :type, :links, :root_url
+	attr_reader :type, :links, :root_url, :dir_links, :file_links
 
 	@@directories = []
 
@@ -16,14 +16,15 @@ class Directory
 		@url = url
 		@root_url = root_url
 		@type = set_type(type.downcase)
-		@links = nil
+		@dir_links = nil
+		@file_links = nil
 
 		@@directories << self
 	end
 
 	def set_links()
-		@links = DirectoryWrapper.get_directory_links(@url)
-	end
+		@dir_links, @file_links = DirectoryWrapper.get_links_from_directory(@url)
+	end	
 
 	def set_type(type)
 		if !@@TYPES.any? { |t| type.include?(t) }
@@ -44,7 +45,7 @@ class Directory
 	end
 
 	def to_s()
-		return "#{@type}: #{@links.length}"
+		return "#{@type}: #{@dir_links.length} #{file_links.length}"
 	end
 
 	def is_empty?
