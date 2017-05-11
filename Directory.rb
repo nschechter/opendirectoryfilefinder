@@ -4,8 +4,9 @@ class Directory
 
 	@@TYPES = ['movie', 'tv', 'music']
 	@@MOVIE_TYPES = ['moving pictures', 'film', 'motion picture', 'features']
-	@@TV_TYPES = ['serie', 'tele', 'show', 'serial', 'video']
+	@@TV_TYPES = ['serie', 'tele', 'show', 'serial', 'video', 'anime']
 	@@MUSIC_TYPES = ['album', 'song', 'cassette', 'vinyl', 'podcast', 'radio']
+	@@SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg']
 
 	attr_reader :type, :links, :root_url
 
@@ -32,6 +33,8 @@ class Directory
 				return 'tv'
 			elsif @@MUSIC_TYPES.any? { |t| type.include?(t) }
 				return 'music'
+			elsif @@SOFTWARE_TYPES.any? { |t| type.include?(t) }
+				return 'software'
 			else
 				return 'unknown'
 			end
@@ -57,15 +60,7 @@ class Directory
 	end
 
 	def self.get_directories_of_type(type)
-		case type
-		when "movie"
-			return @@directories.select { |dir| dir.type === "movie" }
-		when "tv"
-			return @@directories.select { |dir| dir.type === "tv" }
-		when "music"
-			return @@directories.select { |dir| dir.type === "music" }
-		else
-			return @@directories
-		end
+		return @@directories.select { |dir| dir.type === type }
 	end
+
 end
