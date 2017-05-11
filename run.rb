@@ -1,6 +1,7 @@
 require_relative './SmartDirScraper'
 require_relative './DirCollector'
 require_relative './DirectoryScraper'
+require_relative './Directory'
 
 def run
 	sites = []
@@ -32,9 +33,24 @@ def run
 		name = gets.chomp
 		scraper = SmartDirScraper.new(sites[0], name)
 		scraper.start_scraping()
+
 	when 3
-		puts "Downloading"
-		DirectoryScraper.scrape_directory('http://dl2.my98music.com/Data/')
+		puts "Downloading..."
+		DirectoryScraper.scrape_directory('http://sirftp.com/')
+		input = gets.chomp
+		while input != 'exit'
+			case input
+			when 'download'
+			when 'type'
+				byebug
+				Directory.get_directories_of_type('movie')
+			else
+				puts "I don't understand."
+			end
+			if input != 'exit'
+				input = gets.chomp
+			end
+		end
 	else
 		puts "Couldn't recognize #{input}"
 	end
