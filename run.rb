@@ -42,8 +42,11 @@ def run
 			when 'download'
 				puts "Type? (optional)"
 				type = gets.chomp
+				dir_list = Directory.get_directories_of_type(type)
 				puts "Name?"
-				name = gets.chomp
+				file_name = gets.chomp
+				link = Directory.get_file_link_from_directories(file_name, dir_list)
+				puts link.text
 			when 'type'
 				puts "Type?"
 				type = gets.chomp

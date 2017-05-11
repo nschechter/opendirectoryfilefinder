@@ -64,4 +64,16 @@ class Directory
 		return @@directories.select { |dir| dir.type === type }
 	end
 
+	def self.get_file_link_from_directories(file_name, dir_list)
+		file_link = nil
+		dir_list.each do |dir| 
+			dir.file_links.each do |link| 
+				if link["href"].downcase.include?(file_name.downcase)
+					file_link = link
+				end
+			end
+		end
+		return file_link
+	end
+
 end
