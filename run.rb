@@ -22,19 +22,21 @@ def run
 	puts "2) - Search for an item"
 	puts "3) - Download loaded items"
 	# input = gets.chomp
-	input = 3
+	input = gets.chomp
 	case input
-	when 1
+	when '1'
 		puts "Collecting directories to sites.txt"
 		# dircollector = DirCollector.new("Videos")
 		# dircollector.start_scraper()
-	when 2
+		DirectoryScraper.scrape_directory2('http://dl2.my98music.com/Data/', '', 'root')
+	when '2'
 		puts "Name of item?"
 		name = gets.chomp
 		scraper = SmartDirScraper.new(sites[0], name)
 		scraper.start_scraping()
-	when 3
+	when '3'
 		puts "Downloading..."
+		# DirectoryScraper.scrape_root_directory('http://dl2.my98music.com/Data/')
 		DirectoryScraper.scrape_directory('http://dl2.my98music.com/Data/')
 		input = gets.chomp
 		while input != 'exit'
@@ -51,6 +53,9 @@ def run
 				puts "Type?"
 				type = gets.chomp
 				puts Directory.get_directories_of_type(type)
+			when 'scrape'
+				puts "Scraping inner directories"
+				DirectoryScraper.scrape_inner_directories('http://dl2.my98music.com/Data/')
 			else
 				puts "I don't understand."
 			end

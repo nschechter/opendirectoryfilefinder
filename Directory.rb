@@ -2,29 +2,31 @@ require_relative 'DirectoryWrapper'
 
 class Directory
 
-	@@TYPES = ['movie', 'tv', 'music']
+	@@TYPES = ['root', 'movie', 'tv', 'music']
 	@@MOVIE_TYPES = ['moving pictures', 'film', 'motion picture', 'features']
 	@@TV_TYPES = ['serie', 'tele', 'show', 'serial', 'video', 'anime']
 	@@MUSIC_TYPES = ['album', 'song', 'cassette', 'vinyl', 'podcast', 'radio']
-	@@SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg']
+	@@SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg', 'wares']
 
-	attr_reader :type, :links, :root_url, :dir_links, :file_links
+	attr_reader :type, :url, :parent_url, :dir_links, :file_links, :scraped
 
 	@@directories = []
 
-	def initialize(url:, root_url:, type:)
-		@url = url
-		@root_url = root_url
+	def initialize(url:, parent_url:, type:)
+		@url = parent_url + url
+		@parent_url = parent_url
 		@type = set_type(type.downcase)
 		@dir_links = nil
 		@file_links = nil
+		@scraped = false
+		@children = []
 
 		@@directories << self
 	end
 
 	def set_links()
 		@dir_links, @file_links = DirectoryWrapper.get_links_from_directory(@url)
-	end	
+	end
 
 	def set_type(type)
 		if !@@TYPES.any? { |t| type.include?(t) }
@@ -49,15 +51,27 @@ class Directory
 	end
 
 	def is_empty?
-		return @links.length < 2
+		return @dir_links.length == 0
 	end
 
 	def is_root?
-		return @url == @root_url
+		return @url == @parent_url
 	end
+
+	# def children_scraped?
+	# 	return @dir_links.all? { |link| !Directory.get_directory_from_url(url).nil? }
+	# end
+
+	# def get_unscraped_children()
+	# 	return @dir_links.select { |link| Directory.get_directory_from_url(url).nil? }
+	# end
 
 	def self.get_directories()
 		return @@directories
+	end
+
+	def self.get_directory_from_url(url)
+		return @@directories.find { |dir| dir.url === url }
 	end
 
 	def self.get_directories_of_type(type)
