@@ -8,10 +8,10 @@ class DirectoryWrapper
 		dir = Nokogiri::HTML(open(url))
 
 		# Retrive all the links in as a child of a th or td
-		links = dir.xpath('//th/a') + dir.xpath('//td/a')
+		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]')
 
 		# Filter the parent directory
-		links = links.select { |link| !DirectoryWrapper.is_parent?(link["href"]) }
+		links = links.select { |link| !DirectoryWrapper.is_parent?(link.text) }
 
 		# Filter out the links that route to more folders
 		dir_links = links.select { |link| !DirectoryWrapper.has_extension?(link["href"]) }
@@ -33,7 +33,7 @@ class DirectoryWrapper
 	end
 
 	# Returns if a url routes to the parent directory
-	def self.is_parent?(url)
-		return url.match(/(Parent|Directory|\.\.)/)
+	def self.is_parent?(text)
+		return text.match(/(Parent|Directory|\.\.)/)
 	end
 end

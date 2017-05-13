@@ -3,11 +3,15 @@ require_relative './Directory'
 require_relative './DirectoryWrapper'
 
 class DirectoryScraper
-	def self.start_scraping(url)
-		directory = Directory.new(url: url, root_url: url, type: 'root')
-		directory.set_links
-		puts directory
-		DirectoryScraper.scrape_rec(url)
+	def self.start_scraping(url, force)
+		if Directory.get_directory_from_url(url).nil?
+			directory = Directory.new(url: url, root_url: url, type: 'root')
+			directory.set_links
+			puts directory
+			DirectoryScraper.scrape_rec(url)
+		else
+			puts "Already scraped directories @ #{url}"
+		end
 	end
 
 	def self.scrape_rec(root_url)

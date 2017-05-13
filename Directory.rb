@@ -16,8 +16,8 @@ class Directory
 		@url = url
 		@root_url = root_url
 		@type = set_type(type.downcase)
-		@dir_links = nil
-		@file_links = nil
+		@dir_links = []
+		@file_links = []
 		@scraped = false
 		@children = []
 
@@ -40,7 +40,7 @@ class Directory
 			elsif @@SOFTWARE_TYPES.any? { |t| type.include?(t) }
 				return 'software'
 			else
-				return 'unknown'
+				return type
 			end
 		else
 			return @@TYPES.select { |t| type.include?(t) }.first
@@ -48,7 +48,7 @@ class Directory
 	end
 
 	def to_s()
-		return "#{@type}: #{@dir_links.length} #{file_links.length}"
+		return "#{@type}: #{@dir_links.length} - #{@file_links.length}"
 	end
 
 	def is_empty?
@@ -64,7 +64,7 @@ class Directory
 	end
 
 	def self.get_unscraped_directories_from_root_url(root_url)
-		return @@directories.select { |dir| dir.root_url === root_url && !dir.scraped }
+		return @@directories.select { |dir| !dir.scraped && dir.root_url === root_url }
 	end
 
 	def self.get_directory_from_url(url)

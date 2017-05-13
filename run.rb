@@ -19,10 +19,8 @@ def run
 
 	puts "What do you want to do?"
 	puts "scrape) - Scrape directory"
-	puts "2) - Search for an item"
-	puts "3) - Download loaded items"
-	puts "Downloading..."
-	DirectoryScraper.start_scraping('http://dl2.my98music.com/Data/')
+	puts "type) - Search for directory types"
+	puts "download) - Download loaded items"
 	input = gets.chomp
 	while input != 'exit'
 		case input
@@ -33,14 +31,18 @@ def run
 			puts "Name?"
 			file_name = gets.chomp
 			link = Directory.get_file_link_from_directories(file_name, dir_list)
-			puts link.text
+			if link
+				puts link.text
+			else
+				puts "couldn't find"
+			end
 		when 'type'
 			puts "Type?"
 			type = gets.chomp
 			puts Directory.get_directories_of_type(type)
 		when 'scrape'
-			puts "Scraping inner directories"
-			DirectoryScraper.scrape_inner_directories('http://dl2.my98music.com/Data/')
+			puts "Downloading..."
+			DirectoryScraper.start_scraping('http://sirftp.com/', false)
 		else
 			puts "I don't understand."
 		end
