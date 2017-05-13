@@ -4,7 +4,7 @@ source "https://rubygems.org"
 # gem "rails"
 gem 'httparty'
 gem 'nokogiri'
-gem 'google-api-client'
+gem 'sinatra'
 
 group :test, :development do
   gem 'byebug'

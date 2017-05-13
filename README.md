@@ -1,2 +1,3 @@
 # opendirectoryfilefinder
-Finds Specific Files in Open Directories
+Scrapes open directories from /r/opendirectories and indexes them.
+

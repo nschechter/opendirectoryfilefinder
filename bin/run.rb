@@ -1,7 +1,5 @@
-require_relative './SmartDirScraper'
-require_relative './DirCollector'
-require_relative './DirectoryScraper'
-require_relative './Directory'
+require_relative '../lib/DirectoryScraper'
+require_relative '../lib/Directory'
 
 def run
 	sites = []
