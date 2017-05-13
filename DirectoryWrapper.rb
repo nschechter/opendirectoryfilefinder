@@ -1,8 +1,9 @@
 require 'open-uri'
 require 'nokogiri'
+require_relative './Directory'
 
 class DirectoryWrapper
-	def self.get_links_from_directory(url)
+	def self.get_links_from_directory(url, root_url)
 		# Retrieve the response and parse it with Nokogiri
 		dir = Nokogiri::HTML(open(url))
 
@@ -14,6 +15,11 @@ class DirectoryWrapper
 
 		# Filter out the links that route to more folders
 		dir_links = links.select { |link| !DirectoryWrapper.has_extension?(link["href"]) }
+
+		# Create new unscraped directories out of each of the child folders
+		dir_links.each do |link|
+			directory = Directory.new(url: url + link["href"], root_url: root_url, type: link.text)
+		end
 
 		# Filter ou the links that route to files
 		file_links = links.select { |link| DirectoryWrapper.has_extension?(link["href"]) }

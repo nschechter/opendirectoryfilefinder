@@ -8,13 +8,13 @@ class Directory
 	@@MUSIC_TYPES = ['album', 'song', 'cassette', 'vinyl', 'podcast', 'radio']
 	@@SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg', 'wares']
 
-	attr_reader :type, :url, :parent_url, :dir_links, :file_links, :scraped
+	attr_reader :type, :url, :root_url, :dir_links, :file_links, :scraped
 
 	@@directories = []
 
-	def initialize(url:, parent_url:, type:)
-		@url = parent_url + url
-		@parent_url = parent_url
+	def initialize(url:, root_url:, type:)
+		@url = url
+		@root_url = root_url
 		@type = set_type(type.downcase)
 		@dir_links = nil
 		@file_links = nil
@@ -25,7 +25,8 @@ class Directory
 	end
 
 	def set_links()
-		@dir_links, @file_links = DirectoryWrapper.get_links_from_directory(@url)
+		@dir_links, @file_links = DirectoryWrapper.get_links_from_directory(@url, @root_url)
+		@scraped = true
 	end
 
 	def set_type(type)
@@ -55,19 +56,15 @@ class Directory
 	end
 
 	def is_root?
-		return @url == @parent_url
+		return @url == @root_url
 	end
-
-	# def children_scraped?
-	# 	return @dir_links.all? { |link| !Directory.get_directory_from_url(url).nil? }
-	# end
-
-	# def get_unscraped_children()
-	# 	return @dir_links.select { |link| Directory.get_directory_from_url(url).nil? }
-	# end
 
 	def self.get_directories()
 		return @@directories
+	end
+
+	def self.get_unscraped_directories_from_root_url(root_url)
+		return @@directories.select { |dir| dir.root_url === root_url && !dir.scraped }
 	end
 
 	def self.get_directory_from_url(url)

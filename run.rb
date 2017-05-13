@@ -18,58 +18,36 @@ def run
 	end
 
 	puts "What do you want to do?"
-	puts "1) - Update scraper list"
+	puts "scrape) - Scrape directory"
 	puts "2) - Search for an item"
 	puts "3) - Download loaded items"
-	# input = gets.chomp
+	puts "Downloading..."
+	DirectoryScraper.start_scraping('http://dl2.my98music.com/Data/')
 	input = gets.chomp
-	case input
-	when '1'
-		puts "Collecting directories to sites.txt"
-		# dircollector = DirCollector.new("Videos")
-		# dircollector.start_scraper()
-		DirectoryScraper.scrape_directory2('http://dl2.my98music.com/Data/', '', 'root')
-	when '2'
-		puts "Name of item?"
-		name = gets.chomp
-		scraper = SmartDirScraper.new(sites[0], name)
-		scraper.start_scraping()
-	when '3'
-		puts "Downloading..."
-		# DirectoryScraper.scrape_root_directory('http://dl2.my98music.com/Data/')
-		DirectoryScraper.scrape_directory('http://dl2.my98music.com/Data/')
-		input = gets.chomp
-		while input != 'exit'
-			case input
-			when 'download'
-				puts "Type? (optional)"
-				type = gets.chomp
-				dir_list = Directory.get_directories_of_type(type)
-				puts "Name?"
-				file_name = gets.chomp
-				link = Directory.get_file_link_from_directories(file_name, dir_list)
-				puts link.text
-			when 'type'
-				puts "Type?"
-				type = gets.chomp
-				puts Directory.get_directories_of_type(type)
-			when 'scrape'
-				puts "Scraping inner directories"
-				DirectoryScraper.scrape_inner_directories('http://dl2.my98music.com/Data/')
-			else
-				puts "I don't understand."
-			end
-			if input != 'exit'
-				input = gets.chomp
-			end
+	while input != 'exit'
+		case input
+		when 'download'
+			puts "Type? (optional)"
+			type = gets.chomp
+			dir_list = Directory.get_directories_of_type(type)
+			puts "Name?"
+			file_name = gets.chomp
+			link = Directory.get_file_link_from_directories(file_name, dir_list)
+			puts link.text
+		when 'type'
+			puts "Type?"
+			type = gets.chomp
+			puts Directory.get_directories_of_type(type)
+		when 'scrape'
+			puts "Scraping inner directories"
+			DirectoryScraper.scrape_inner_directories('http://dl2.my98music.com/Data/')
+		else
+			puts "I don't understand."
 		end
-	else
-		puts "Couldn't recognize #{input}"
+		if input != 'exit'
+			input = gets.chomp
+		end
 	end
-end
-
-def setup
-
 end
 
 run()
