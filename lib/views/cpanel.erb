@@ -1,0 +1,23 @@
+<div class="cpanel">
+	<div class="card">
+		<h2>Add directory</h2>
+		<form method="POST" action="/directories">
+			<input type="text" name="url" placeholder="http://directory.com" />
+			<input type="submit" value="Add" />
+		</form>
+		<div class="directory-response">
+
+		</div>
+	</div>
+
+	<div class="card">
+		<h2>Download file</h2>
+	  <form method="POST" action="/download">
+			<input type="text" name="download" placeholder="Return of the King" />
+			<input type="submit" value="Find" />
+		</form>
+		<div class="download-response">
+
+		</div>
+	</div>
+</div>
