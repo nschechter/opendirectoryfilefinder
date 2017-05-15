@@ -1,17 +1,35 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (5.0.2)
+      activesupport (= 5.0.2)
+    activerecord (5.0.2)
+      activemodel (= 5.0.2)
+      activesupport (= 5.0.2)
+      arel (~> 7.0)
+    activesupport (5.0.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    arel (7.1.4)
+    bcrypt (3.1.11)
     byebug (9.0.6)
+    concurrent-ruby (1.0.5)
     diff-lcs (1.3)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
+    i18n (0.8.1)
     mini_portile2 (2.1.0)
+    minitest (5.10.1)
     multi_xml (0.6.0)
     nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
+    pg (0.20.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
+    rake (12.0.0)
     rspec (3.6.0)
       rspec-core (~> 3.6.0)
       rspec-expectations (~> 3.6.0)
@@ -29,18 +47,29 @@ GEM
       rack (~> 1.5)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
+    sinatra-activerecord (2.0.12)
+      activerecord (>= 3.2)
+      sinatra (>= 1.0)
+    thread_safe (0.3.6)
     tilt (2.0.7)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
     vcr (3.0.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord
+  bcrypt
   byebug
   httparty
   nokogiri
+  pg
+  rake
   rspec
   sinatra
+  sinatra-activerecord
   vcr
 
 BUNDLED WITH

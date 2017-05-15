@@ -1,12 +1,18 @@
 require 'sinatra/base'
 require 'byebug'
 require_relative './DirectoryScraper'
+require_relative './models/Account'
+require 'bcrypt'
+
+#set :database, {adapter: "postgresql", database: "db.db"}
 
 class App < Sinatra::Base
-	@@logged_in = false
+  configure do
+    enable :sessions
+  end
 
 	before do
-	  @logged_in = @@logged_in
+	  @logged_in = !session[:account_id].nil?
 	end
 
   get '/' do
@@ -22,8 +28,9 @@ class App < Sinatra::Base
   end
 
   post '/sessions' do
-  	if params[:username] === 'noah' && params[:password] === 'noah'
-  		@@logged_in = true
+    account = Account.find_by(username: params[:username])
+    if account && account.authenticate(params[:password])
+  		session[:account_id] = account.id
   		redirect '/panel'
   	else
   		@error = "Incorrect username or password."
@@ -59,6 +66,6 @@ class App < Sinatra::Base
 
   private
   def logged_in?
-  	return @@logged_in
+  	return !session[:account_id].nil?
 	end
 end
