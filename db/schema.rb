@@ -25,9 +25,9 @@ ActiveRecord::Schema.define(version: 20170515011155) do
     t.string  "url"
     t.string  "root_url"
     t.string  "dir_type"
-    t.string  "dir_links"
-    t.string  "file_links"
-    t.boolean "scraped"
+    t.text    "dir_links",  default: [], array: true
+    t.text    "file_links", default: [], array: true
+    t.boolean "scraped", default: false
   end
 
 end

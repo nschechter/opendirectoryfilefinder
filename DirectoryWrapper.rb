@@ -7,8 +7,8 @@ class DirectoryWrapper
 		# Retrieve the response and parse it with Nokogiri
 		dir = Nokogiri::HTML(open(url))
 
-		# Retrive all the links in as a child of a th or td
-		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]')
+		# Retrive all the links in as a child of a th or td or li
+		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]') + dir.xpath('//li/a[not(child::*)]')
 
 		# Filter the parent directory
 		links = links.select { |link| !DirectoryWrapper.is_parent?(link.text) }
@@ -18,18 +18,21 @@ class DirectoryWrapper
 
 		# Create new unscraped directories out of each of the child folders
 		dir_links.each do |link|
-			OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text)
+			OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text, scraped: false)
 		end
 
 		# Filter ou the links that route to files
 		file_links = links.select { |link| DirectoryWrapper.has_extension?(link["href"]) }
+
+		# Recreate the links to point only to their URL
+		file_links = file_links.map { |link| url + link["href"] }
 
 		return [dir_links, file_links]
 	end
 
 	# Returns if a url has a file extension
 	def self.has_extension?(url)
-		return url.match(/(.)([a-zA-Z0-9]+)$/)
+		return url.match(/(\.)([a-zA-Z0-9]){3,4}$/)
 	end
 
 	# Returns if a url routes to the parent directory

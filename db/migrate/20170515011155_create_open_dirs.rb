@@ -4,9 +4,9 @@ class CreateOpenDirs < ActiveRecord::Migration
       t.string :url
       t.string :root_url
       t.string :dir_type
-      t.string :dir_links
-      t.string :file_links
-      t.boolean :scraped
+      t.text :dir_links, array: true, default: []
+      t.text :file_links, array: true, default: []
+      t.boolean :scraped, default: false
     end
   end
 end

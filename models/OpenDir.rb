@@ -4,7 +4,7 @@ class OpenDir < ActiveRecord::Base
 
 	TYPES = ['root', 'movie', 'tv', 'music']
 	MOVIE_TYPES = ['moving pictures', 'film', 'motion picture', 'features']
-	TV_TYPES = ['serie', 'tele', 'show', 'serial', 'video', 'anime']
+	TV_TYPES = ['serie', 'tele', 'show', 'serial', 'video', 'anime', 'cartoon', 'animate']
 	MUSIC_TYPES = ['album', 'song', 'cassette', 'vinyl', 'podcast', 'radio']
 	SOFTWARE_TYPES = ['game', 'soft', 'exe', 'dmg', 'wares']
 	EBOOK_TYPES = ['book', 'mobi', 'read', 'text', 'instruction']
@@ -14,17 +14,29 @@ class OpenDir < ActiveRecord::Base
 		dir.update!(dir_type: set_type(dir.dir_type))
 	end
 
-	def self.set_links(dir)
-		dir_links, file_links = DirectoryWrapper.get_links_from_directory(@url, @root_url)
-		dir.update!(dir_links: dir_links, file_links: file_links, scraped: true)
+	def set_links()
+		dir_links, file_links = DirectoryWrapper.get_links_from_directory(self.url, self.root_url)
+		self.update!(dir_links: dir_links, file_links: file_links, scraped: true)
 	end
 
 	def self.get_unscraped_directories_from_root_url(root_url)
-		return OpenDir.all.select { |dir| !dir.scraped && dir.root_url === root_url }
+		return OpenDir.where(scraped: false, root_url: root_url)
 	end
 
 	def self.get_directory_from_url(url)
-		return OpenDir.all.find { |dir| dir.url === url }
+		return OpenDir.where(url: url).limit(1).first
+	end
+
+	def self.get_file_link_from_directories(file_name)
+		file_link = nil
+		dir_list.each do |dir|
+			dir.file_links.each do |link|
+				if link.downcase.include?(file_name.downcase)
+					file_link = link
+				end
+			end
+		end
+		return file_link
 	end
 
 	def set_type(type)
@@ -48,6 +60,6 @@ class OpenDir < ActiveRecord::Base
 	end
 
 	def to_s()
-		return "#{@type}: #{@dir_links.length} - #{@file_links.length}"
+		return "#{self.dir_type}: #{self.dir_links.length} - #{self.file_links.length}"
 	end
 end

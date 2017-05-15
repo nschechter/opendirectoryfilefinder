@@ -79,8 +79,9 @@ class Directory
 		file_link = nil
 		dir_list.each do |dir| 
 			dir.file_links.each do |link| 
-				if link["href"].downcase.include?(file_name.downcase)
-					file_link = link
+				n_link = Nokogiri::HTML(link)
+				if n_link["href"].downcase.include?(file_name.downcase)
+					file_link = n_link
 				end
 			end
 		end
