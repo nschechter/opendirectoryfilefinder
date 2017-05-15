@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'byebug'
 require_relative './DirectoryScraper'
 require_relative './models/Account'
+require_relative './models/OpenDir'
 require 'bcrypt'
 
 #set :database, {adapter: "postgresql", database: "db.db"}

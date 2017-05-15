@@ -1,9 +1,9 @@
-class CreateDirectories < ActiveRecord::Migration
+class CreateOpenDirs < ActiveRecord::Migration
   def change
-    create_table :directories do |t|
+    create_table :open_dirs do |t|
       t.string :url
       t.string :root_url
-      t.string :type
+      t.string :dir_type
       t.string :dir_links
       t.string :file_links
       t.boolean :scraped

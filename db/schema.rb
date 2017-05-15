@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(version: 20170515011155) do
     t.boolean "admin"
   end
 
-  create_table "directories", force: :cascade do |t|
+  create_table "open_dirs", force: :cascade do |t|
     t.string  "url"
     t.string  "root_url"
-    t.string  "type"
+    t.string  "dir_type"
     t.string  "dir_links"
     t.string  "file_links"
     t.boolean "scraped"
