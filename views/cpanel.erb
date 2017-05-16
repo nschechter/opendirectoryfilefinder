@@ -13,11 +13,12 @@
 	<div class="card">
 		<h2>Download file</h2>
 	  <form method="POST" action="/download">
-			<input type="text" name="download" placeholder="Return of the King" />
+			<input type="text" name="file_name" placeholder="Return of the King" />
+			<input type="text" name="file_type" placeholder="Movie" />
 			<input type="submit" value="Find" />
 		</form>
 		<div class="download-response">
-
+			<%= @file_name %>
 		</div>
 	</div>
 </div>

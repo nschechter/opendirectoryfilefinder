@@ -14,15 +14,15 @@ class DirectoryWrapper
 		links = links.select { |link| !DirectoryWrapper.is_parent?(link.text) }
 
 		# Filter out the links that route to more folders
-		dir_links = links.select { |link| !DirectoryWrapper.has_extension?(link["href"]) }
+		dir_links = links.select { |link| DirectoryWrapper.has_directory_extension?(link["href"]) }
 
 		# Create new unscraped directories out of each of the child folders
 		dir_links.each do |link|
-			OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text, scraped: false)
+			OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text)
 		end
 
 		# Filter ou the links that route to files
-		file_links = links.select { |link| DirectoryWrapper.has_extension?(link["href"]) }
+		file_links = links.select { |link| DirectoryWrapper.has_file_extension?(link["href"]) }
 
 		# Recreate the links to point only to their URL
 		file_links = file_links.map { |link| url + link["href"] }
@@ -31,8 +31,12 @@ class DirectoryWrapper
 	end
 
 	# Returns if a url has a file extension
-	def self.has_extension?(url)
+	def self.has_file_extension?(url)
 		return url.match(/(\.)([a-zA-Z0-9]){3,4}$/)
+	end
+
+	def self.has_directory_extension?(url)
+		return url.match(/\/$/)
 	end
 
 	# Returns if a url routes to the parent directory

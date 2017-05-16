@@ -5,7 +5,7 @@ require_relative './DirectoryWrapper'
 class DirectoryScraper
 	def self.start_scraping(url, force)
 		if OpenDir.get_directory_from_url(url).nil?
-			dir = OpenDir.create!(url: url, root_url: url, dir_type: 'root', scraped: false)
+			dir = OpenDir.create!(url: url, root_url: url, dir_type: 'root')
 			dir.set_links
 			puts dir
 			DirectoryScraper.scrape_rec(url)

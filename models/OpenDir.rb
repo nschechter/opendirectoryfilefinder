@@ -27,9 +27,9 @@ class OpenDir < ActiveRecord::Base
 		return OpenDir.where(url: url).limit(1).first
 	end
 
-	def self.get_file_link_from_directories(file_name)
+	def self.get_file_link_from_directories(file_name, type)
 		file_link = nil
-		dir_list.each do |dir|
+		OpenDir.all.each do |dir|
 			dir.file_links.each do |link|
 				if link.downcase.include?(file_name.downcase)
 					file_link = link

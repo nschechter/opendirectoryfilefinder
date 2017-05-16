@@ -53,7 +53,8 @@ class App < Sinatra::Base
   end
 
   post '/download' do
-  	puts OpenDir.get_file_link_from_directories(params[:download], OpenDir.all)
+  	@file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
+    puts @file_name
   	redirect '/panel'
   end
 
