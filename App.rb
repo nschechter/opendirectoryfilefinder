@@ -1,14 +1,20 @@
 require 'sinatra/base'
 require 'byebug'
+require 'rufus-scheduler'
 require_relative './DirectoryScraper'
 require_relative './models/Account'
 require_relative './models/OpenDir'
 require_relative './OpenURIWrapper'
 require 'bcrypt'
 
-#set :database, {adapter: "postgresql", database: "db.db"}
-
 class App < Sinatra::Base
+
+  scheduler = Rufus::Scheduler.new
+
+  scheduler.every '1d' do
+      Rake::Task[:scrape_opendirectories].execute
+  end
+
   configure do
     enable :sessions
   end
@@ -60,7 +66,7 @@ class App < Sinatra::Base
   end
 
   post '/reddit' do
-    resp = OpenURIWrapper.get('https://www.reddit.com/r/opendirectories/', 'opendirectories')
+    Rake::Task[:scrape_opendirectories].execute 
     redirect '/panel'
   end
 

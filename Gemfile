@@ -11,6 +11,7 @@ gem 'sinatra-activerecord'
 gem 'rake'
 gem 'pg'
 gem 'bcrypt'
+gem 'rufus-scheduler'
 
 group :test, :development do
   gem 'byebug'

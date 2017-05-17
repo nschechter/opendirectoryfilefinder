@@ -8,8 +8,12 @@ class DirectoryScraper
 		if dir.nil?
 			dir = OpenDir.create!(url: url, root_url: url, dir_type: 'root')
 			dir.set_links
-			puts dir
-			DirectoryScraper.scrape_rec(url)
+			if dir # If it has not been deleted
+				puts dir
+				DirectoryScraper.scrape_rec(url)
+			else
+				puts "Directory @ #{url} is invalid"
+			end
 		else
 			puts "Already scraped directories @ #{url}"
 		end

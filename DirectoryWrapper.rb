@@ -10,24 +10,29 @@ class DirectoryWrapper
 		# Retrive all the links in as a child of a th or td or li
 		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]') + dir.xpath('//li/a[not(child::*)]')
 
-		# Filter the parent directory
-		links = links.select { |link| !DirectoryWrapper.is_parent?(link.text) }
+		# If we have detected a directory
+		if links.length > 0
+			# Filter the parent directory
+			links = links.select { |link| !DirectoryWrapper.is_parent?(link.text) }
 
-		# Filter out the links that route to more folders
-		dir_links = links.select { |link| DirectoryWrapper.has_directory_extension?(link["href"]) }
+			# Filter out the links that route to more folders
+			dir_links = links.select { |link| DirectoryWrapper.has_directory_extension?(link["href"]) }
 
-		# Create new unscraped directories out of each of the child folders
-		dir_links.each do |link|
-			OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text)
-		end
+			# Create new unscraped directories out of each of the child folders
+			dir_links.each do |link|
+				OpenDir.create!(url: url + link["href"], root_url: root_url, dir_type: link.text)
+			end
 
-		# Filter ou the links that route to files
-		file_links = links.select { |link| DirectoryWrapper.has_file_extension?(link["href"]) }
+			# Filter ou the links that route to files
+			file_links = links.select { |link| DirectoryWrapper.has_file_extension?(link["href"]) }
 
-		# Recreate the links to point only to their URL
-		file_links = file_links.map { |link| url + link["href"] }
+			# Recreate the links to point only to their URL
+			file_links = file_links.map { |link| url + link["href"] }
 
-		return [dir_links, file_links]
+			return [dir_links, file_links]
+		else
+			return nil
+		end 
 	end
 
 	# Returns if a url has a file extension

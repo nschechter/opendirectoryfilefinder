@@ -16,7 +16,11 @@ class OpenDir < ActiveRecord::Base
 
 	def set_links()
 		dir_links, file_links = DirectoryWrapper.get_links_from_directory(self.url, self.root_url)
-		self.update!(dir_links: dir_links, file_links: file_links, scraped: true)
+		if dir_links || file_links
+			self.update!(dir_links: dir_links, file_links: file_links, scraped: true)
+		else
+			self.destroy
+		end
 	end
 
 	def self.get_unscraped_directories_from_root_url(root_url)
