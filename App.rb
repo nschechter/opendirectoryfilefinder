@@ -60,10 +60,23 @@ class App < Sinatra::Base
 
   get '/directories' do
   	if logged_in?
+      @root_directories = OpenDir.where('url = root_url')
   		erb :directories
   	else
   		redirect '/login'
   	end
+  end
+
+  patch '/directories/:id' do
+    dir = OpenDir.find(params[:id])
+    dir.force_update()
+    erb :directories
+  end
+
+  delete '/directories/:id' do
+    dir = OpenDir.find(params[:id])
+    OpenDir.where(root_url: dir.root_url).destroy_all
+    redirect '/directories'
   end
 
   private

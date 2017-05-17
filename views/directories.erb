@@ -1,3 +1,17 @@
 <div class="directory-list">
-	Directories
+	<ul>
+		<% @root_directories.each do |dir| %>
+			<li>
+				<%= dir.url %>
+				<form method="POST" action="/directories/<%=dir.id%>">
+					<input type="hidden" name="_method" value="DELETE">
+					<input type="submit" value="Delete" />
+				</form>
+				<form method="POST" action="/directories/<%=dir.id%>">
+					<input type="hidden" name="_method" value="PATCH">
+					<input type="submit" value="Update" />
+				</form>
+			</li>
+		<% end %>
+	</ul>
 </div>

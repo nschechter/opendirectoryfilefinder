@@ -39,6 +39,13 @@ class OpenDir < ActiveRecord::Base
 		return file_link
 	end
 
+	def force_update()
+		OpenDir.where(root_url: root_url).map do |dir|
+			dir.scraped = false
+		end
+		DirectoryScraper.start_scraping(root_url)
+	end
+
 	def set_type(type)
 		if !TYPES.any? { |t| type.include?(t) }
 			if MOVIE_TYPES.any? { |t| type.include?(t) }
