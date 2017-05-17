@@ -40,7 +40,7 @@ class App < Sinatra::Base
 
   post '/directories' do
   	puts params[:url]
-		DirectoryScraper.start_scraping(params[:url], false)
+		DirectoryScraper.start_scraping(params[:url])
 		erb :cpanel
   end
 
@@ -69,8 +69,8 @@ class App < Sinatra::Base
 
   patch '/directories/:id' do
     dir = OpenDir.find(params[:id])
-    dir.force_update()
-    erb :directories
+    dir.force_update(dir.root_url)
+    redirect '/directories'
   end
 
   delete '/directories/:id' do

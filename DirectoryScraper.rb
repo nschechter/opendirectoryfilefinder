@@ -3,8 +3,9 @@ require_relative './models/OpenDir'
 require_relative './DirectoryWrapper'
 
 class DirectoryScraper
-	def self.start_scraping(url, force)
-		if OpenDir.get_directory_from_url(url).nil?
+	def self.start_scraping(url)
+		dir = OpenDir.get_directory_from_url(url)
+		if dir.nil?
 			dir = OpenDir.create!(url: url, root_url: url, dir_type: 'root')
 			dir.set_links
 			puts dir

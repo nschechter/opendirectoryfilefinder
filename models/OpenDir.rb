@@ -39,10 +39,8 @@ class OpenDir < ActiveRecord::Base
 		return file_link
 	end
 
-	def force_update()
-		OpenDir.where(root_url: root_url).map do |dir|
-			dir.scraped = false
-		end
+	def force_update(root_url)
+		OpenDir.destroy_all(root_url: root_url)
 		DirectoryScraper.start_scraping(root_url)
 	end
 
