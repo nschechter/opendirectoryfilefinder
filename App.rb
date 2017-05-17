@@ -3,6 +3,7 @@ require 'byebug'
 require_relative './DirectoryScraper'
 require_relative './models/Account'
 require_relative './models/OpenDir'
+require_relative './OpenURIWrapper'
 require 'bcrypt'
 
 #set :database, {adapter: "postgresql", database: "db.db"}
@@ -56,6 +57,11 @@ class App < Sinatra::Base
   	@file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
     puts @file_name
   	redirect '/panel'
+  end
+
+  post '/reddit' do
+    resp = OpenURIWrapper.get('https://www.reddit.com/r/opendirectories/', 'opendirectories')
+    redirect '/panel'
   end
 
   get '/directories' do
