@@ -33,7 +33,7 @@ class OpenDir < ActiveRecord::Base
 
 	def self.get_file_link_from_directories(file_name, type)
 		file_link = nil
-		OpenDir.all.each do |dir|
+		OpenDir.where(dir_type: type).each do |dir|
 			dir.file_links.each do |link|
 				if link.downcase.include?(file_name.downcase)
 					file_link = link
@@ -41,6 +41,18 @@ class OpenDir < ActiveRecord::Base
 			end
 		end
 		return file_link
+	end
+
+	def self.get_files_by_name(file_name, type)
+		file_links = []
+		OpenDir.where(dir_type: type).each do |dir|
+			dir.file_links.each do |link|
+				if link.downcase.include?(file_name.downcase)
+					file_links << link
+				end
+			end
+		end
+		return file_links
 	end
 
 	def force_update(root_url)

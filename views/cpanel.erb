@@ -12,9 +12,15 @@
 
 	<div class="card">
 		<h2>Download file</h2>
-	  <form method="POST" action="/download">
+	  <form method="GET" action="/panel">
 			<input type="text" name="file_name" placeholder="Return of the King" />
-			<input type="text" name="file_type" placeholder="Movie" />
+			<select name="file_type">
+			  <option value="movie">Movie</option>
+			  <option value="show">TV</option>
+			  <option value="music">Music</option>
+			  <option value="software">Software</option>
+			  <option value="ebook">eBook</option>
+			</select>
 			<input type="submit" value="Find" />
 		</form>
 		<div class="download-response">
@@ -28,7 +34,6 @@
 			<input type="submit" value="Reddit" />
 		</form>
 		<div class="download-response">
-			<%= @file_name %>
 		</div>
 	</div>
 </div>

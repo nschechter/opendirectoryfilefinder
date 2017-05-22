@@ -44,7 +44,7 @@ class DirectoryWrapper
 
 	# Returns if a url has a file extension
 	def self.has_file_extension?(url)
-		return url.match(/(\.)([a-zA-Z0-9]){3,4}$/)
+		return url.match(/(\.)([a-zA-Z0-9]){3,4}$/) && !url.include?('torrent')
 	end
 
 	def self.has_directory_extension?(url)

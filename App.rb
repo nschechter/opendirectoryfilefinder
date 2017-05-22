@@ -13,7 +13,7 @@ class App < Sinatra::Base
 
   # Scheduled to scrape reddit every 24 hours.
   scheduler.every '1d' do
-      Rake::Task[:scrape_opendirectories].execute
+      DirectoryScraper.scrape_reddit()
   end
 
   configure do
@@ -54,20 +54,17 @@ class App < Sinatra::Base
 
   get '/panel' do
   	if logged_in?
+      if params[:file_name]
+        @file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
+      end
   		erb :cpanel
   	else
   		redirect '/login'
   	end
   end
 
-  post '/download' do
-  	@file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
-    puts @file_name
-  	redirect '/panel'
-  end
-
   post '/reddit' do
-    Rake::Task[:scrape_opendirectories].execute 
+    DirectoryScraper.scrape_reddit()
     redirect '/panel'
   end
 
