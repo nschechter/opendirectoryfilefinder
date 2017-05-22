@@ -21,8 +21,7 @@ class App < Sinatra::Base
   end
 
 	before do
-	  @logged_in = !session[:account_id].nil?
-    if !logged_in? && request.path != '/login'
+    if !logged_in? && request.path != '/login' && request.request_method == 'GET'
       redirect '/login'
     end
 	end
