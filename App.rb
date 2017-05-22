@@ -48,7 +48,7 @@ class App < Sinatra::Base
 
   post '/directories' do
   	puts params[:url]
-		DirectoryScraper.start_scraping(params[:url])
+		DirectoryScraper.start_scraping(params[:url], params[:type])
 		erb :cpanel
   end
 

@@ -4,9 +4,9 @@ require_relative './DirectoryWrapper'
 
 class DirectoryScraper
 	def self.start_scraping(url)
-		dir = OpenDir.get_directory_from_url(url)
+		dir = OpenDir.get_directory_from_url(url, type)
 		if dir.nil?
-			dir = OpenDir.create!(url: url, root_url: url, dir_type: 'root')
+			dir = OpenDir.create!(url: url, root_url: url, dir_type: type)
 			dir.set_links
 			if dir # If it has not been deleted
 				puts dir

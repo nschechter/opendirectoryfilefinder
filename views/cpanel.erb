@@ -3,6 +3,14 @@
 		<h2>Add directory</h2>
 		<form method="POST" action="/directories">
 			<input type="text" name="url" placeholder="http://directory.com" />
+			<select name="type">
+				<option value="root">Root</option>
+			  <option value="movie">Movie</option>
+			  <option value="show">TV</option>
+			  <option value="music">Music</option>
+			  <option value="software">Software</option>
+			  <option value="ebook">eBook</option>
+			</select>
 			<input type="submit" value="Add" />
 		</form>
 		<div class="directory-response">
