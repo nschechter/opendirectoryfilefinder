@@ -22,14 +22,13 @@ class App < Sinatra::Base
 
 	before do
 	  @logged_in = !session[:account_id].nil?
+    if !logged_in?
+      redirect '/login'
+    end
 	end
 
   get '/' do
-  	if logged_in?
-    	redirect '/panel'
-    else
-    	redirect '/login'
-    end
+    redirect '/panel'
   end
 
   get '/login' do
@@ -43,6 +42,7 @@ class App < Sinatra::Base
   		redirect '/panel'
   	else
   		@error = "Incorrect username or password."
+      redirect '/login'
   	end
   end
 
@@ -53,14 +53,10 @@ class App < Sinatra::Base
   end
 
   get '/panel' do
-  	if logged_in?
-      if params[:file_name]
-        @file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
-      end
-  		erb :cpanel
-  	else
-  		redirect '/login'
-  	end
+    if params[:file_name]
+      @file_name = OpenDir.get_file_link_from_directories(params[:file_name], params[:file_type].downcase)
+    end
+		erb :cpanel
   end
 
   post '/reddit' do
@@ -69,12 +65,8 @@ class App < Sinatra::Base
   end
 
   get '/directories' do
-  	if logged_in?
-      @root_directories = OpenDir.where('url = root_url')
-  		erb :directories
-  	else
-  		redirect '/login'
-  	end
+    @root_directories = OpenDir.where('url = root_url')
+		erb :directories
   end
 
   patch '/directories/:id' do
