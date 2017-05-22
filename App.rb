@@ -11,6 +11,7 @@ class App < Sinatra::Base
 
   scheduler = Rufus::Scheduler.new
 
+  # Scheduled to scrape reddit every 24 hours.
   scheduler.every '1d' do
       Rake::Task[:scrape_opendirectories].execute
   end

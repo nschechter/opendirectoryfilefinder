@@ -7,8 +7,8 @@ class DirectoryWrapper
 		# Retrieve the response and parse it with Nokogiri
 		dir = Nokogiri::HTML(open(url))
 
-		# Retrive all the links in as a child of a th or td or li
-		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]') + dir.xpath('//li/a[not(child::*)]')
+		# Retrive all the file links or directory links selected by XPath
+		links = dir.xpath('//th/a[not(child::*)]') + dir.xpath('//td/a[not(child::*)]') + dir.xpath('//li/a[not(child::*)]') + dir.xpath('//pre/a[not(child::*)]')
 
 		# If it's powered by h5ai, return false. Need to add support for it later.
 		meta_tags = dir.xpath('//head/meta')
