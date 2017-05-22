@@ -22,7 +22,7 @@ class App < Sinatra::Base
 
 	before do
 	  @logged_in = !session[:account_id].nil?
-    if !logged_in?
+    if !logged_in? && request.path != '/login'
       redirect '/login'
     end
 	end
